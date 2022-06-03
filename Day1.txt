@@ -1,0 +1,62 @@
+Attribute VB_Name = "Day1"
+Sub Day1_1()
+
+Dim NbrIncrease As Integer
+GetDatas
+
+'Compter le nombre d'augmentation de la profondeur
+ActiveSheet.Range("A2").Select
+Do While ActiveCell.Value <> Empty
+    If ActiveCell.Offset(-1, 0).Value < ActiveCell.Value Then
+        NbrIncrease = NbrIncrease + 1
+    End If
+    ActiveCell.Offset(1, 0).Select
+Loop
+MsgBox (NbrIncrease)
+End Sub
+
+Sub GetDatas()
+
+Application.ScreenUpdating = False
+Workbooks.OpenText "C:\Users\Nadine Glomot\Desktop\Excel VBA\AdventOfCode\inputDay1.txt", DataType:=xlFixedWidth, TrailingMinusNumbers:=True
+
+With ActiveWorkbook
+    .ActiveSheet.Copy After:=ThisWorkbook.Sheets(Sheets.Count)
+    .Close
+End With
+Cells.Select
+Cells.EntireColumn.AutoFit
+Range("A1").Select
+Application.ScreenUpdating = True
+
+End Sub
+
+
+Sub Day1_2()
+
+Dim NbrIncrease As Integer
+Dim Depth1 As Integer
+Dim Depth2 As Integer
+
+Workbooks.OpenText "C:\Users\Nadine Glomot\Desktop\Excel VBA\AdventOfCode\inputDay1.txt", DataType:=xlFixedWidth, TrailingMinusNumbers:=True
+
+Range("A1").Select
+
+Depth2 = ActiveCell.Value + ActiveCell.Offset(1, 0).Value + ActiveCell.Offset(2, 0).Value
+Depth1 = Depth2
+ActiveCell.Offset(1, 0).Select
+
+Do While ActiveCell.Value <> Empty
+Depth2 = ActiveCell.Value + ActiveCell.Offset(1, 0).Value + ActiveCell.Offset(2, 0).Value
+
+    If Depth2 > Depth1 Then
+        NbrIncrease = NbrIncrease + 1
+    End If
+
+Depth1 = Depth2
+ActiveCell.Offset(1, 0).Select
+Loop
+
+MsgBox (NbrIncrease)
+
+End Sub
